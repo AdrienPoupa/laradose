@@ -12,7 +12,9 @@ Out of the box, 6 containers are installed:
 - Composer
 - NPM
 
-## Installation
+## Installation Instructions
+
+First, make sure [Docker Compose is installed](https://docs.docker.com/compose/install/) on your machine.
 
 To install a Laravel application from scratch, proceed as follows:
 
