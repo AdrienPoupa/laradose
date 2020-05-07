@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  # Redis should be installed when using Laravel Horizon
+  horizon:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: horizon
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - mysql
+      - composer
+    working_dir: /var/www
+    entrypoint: ['/var/www/artisan', 'horizon']
+    networks:
+      - laravel

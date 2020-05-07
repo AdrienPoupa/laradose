@@ -15,4 +15,4 @@ yarn-error.log
 
 # Docker
 /docker/mysql/*.sql
-docker-compose.override.yml
+/docker-compose.override.yml
