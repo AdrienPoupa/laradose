@@ -1,0 +1,88 @@
+# Laravel Docker Compose
+# Author: Adrien Poupa
+# https://github.com/AdrienPoupa/laravel-docker-compose
+
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    volumes:
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - laravel
+
+  php:
+    build:
+      context: .
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+      dockerfile: ./docker/php/Dockerfile
+    environment:
+      PHP_VERSION: ${PHP_VERSION}
+    volumes:
+      - ./:/var/www
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    networks:
+      - laravel
+
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - "${NGINX_HTTPS_PORT:-4443}:443"
+      - "${NGINX_HTTP_PORT:-8080}:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/keys:/etc/nginx/ssl
+    networks:
+      - laravel
+
+  artisan:
+    build:
+      context: .
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+      dockerfile: ./docker/php/Dockerfile
+    environment:
+      PHP_VERSION: ${PHP_VERSION}
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - mysql
+    working_dir: /var/www
+    entrypoint: ['/var/www/artisan']
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    networks:
+      - laravel
+
+  composer:
+    image: composer:latest
+    volumes:
+      - ./:/var/www
+    working_dir: /var/www
+    entrypoint: "composer --ignore-platform-reqs"
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    networks:
+      - laravel
+
+  npm:
+    image: node:12
+    environment:
+      MIX_MODE: ${MIX_MODE}
+      MIX_BROWSERSYNC: ${MIX_BROWSERSYNC}
+    entrypoint: "npm run ${MIX_MODE:-dev}"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/keys:/etc/ssl
+    working_dir: /var/www
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+
+networks:
+  laravel:
