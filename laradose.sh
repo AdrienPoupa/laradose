@@ -33,6 +33,7 @@ copy_files() {
 
   echo "Unzipping..."
 	unzip -q laradose.zip -d laradose
+	mv laradose/laradose-master/* laradose/laradose-master/.* laradose/
 
   echo "Copying files..."
 	cp -r ./laradose/docker ./docker
