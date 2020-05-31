@@ -10,7 +10,6 @@ pause() {
 
 install() {
   if [ -d ./docker ]; then
-    # Take action if $DIR exists. #
     fatal "Laradose is already installed"
   fi
 
@@ -26,7 +25,7 @@ install() {
 }
 
 copy_files() {
-  verify_download curl || verify_download wget || fatal 'Can not find curl or wget for downloading files'
+  verify_download curl || verify_download wget || fatal 'curl or wget are required for downloading files'
   verify_command unzip || fatal 'unzip is required for the installation script'
 
   echo "Downloading..."
