@@ -1,6 +1,6 @@
-# Laravel Docker Compose
+# Laradose
 
-This repository aims to bring a light yet powerful and configurable Docker compose configuration to run a Laravel
+Laradose aims to bring a light yet powerful and configurable Docker compose configuration to run a Laravel
 application locally. It is not intended for production.
 
 Out of the box, 6 containers are installed:

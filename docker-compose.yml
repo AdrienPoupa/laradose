@@ -1,4 +1,4 @@
-# Laravel Docker Compose
+# Laradose
 # Author: Adrien Poupa
 # https://github.com/AdrienPoupa/laravel-docker-compose
 
@@ -8,7 +8,7 @@ services:
   mysql:
     image: mysql:8
     ports:
-      - "${DB_PORT:-3306}:3306"
+      - "${DB_PORT}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -27,15 +27,15 @@ services:
       PHP_VERSION: ${PHP_VERSION}
     volumes:
       - ./:/var/www
-    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    user: "${USER_ID}:${GROUP_ID}"
     networks:
       - laravel
 
   nginx:
     image: nginx:stable-alpine
     ports:
-      - "${NGINX_HTTPS_PORT:-4443}:443"
-      - "${NGINX_HTTP_PORT:-8080}:80"
+      - "${NGINX_HTTPS_PORT}:443"
+      - "${NGINX_HTTP_PORT}:80"
     volumes:
       - ./:/var/www
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -57,7 +57,7 @@ services:
       - mysql
     working_dir: /var/www
     entrypoint: ['/var/www/artisan']
-    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    user: "${USER_ID}:${GROUP_ID}"
     networks:
       - laravel
 
@@ -67,7 +67,7 @@ services:
       - ./:/var/www
     working_dir: /var/www
     entrypoint: "composer --ignore-platform-reqs"
-    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    user: "${USER_ID}:${GROUP_ID}"
     networks:
       - laravel
 
@@ -76,13 +76,13 @@ services:
     environment:
       MIX_MODE: ${MIX_MODE}
       MIX_BROWSERSYNC: ${MIX_BROWSERSYNC}
-    entrypoint: "npm run ${MIX_MODE:-dev}"
+    entrypoint: "npm run ${MIX_MODE}"
     volumes:
       - ./:/var/www
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./docker/nginx/keys:/etc/ssl
     working_dir: /var/www
-    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    user: "${USER_ID}:${GROUP_ID}"
 
 networks:
   laravel:
