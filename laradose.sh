@@ -17,6 +17,8 @@ install() {
 
   copy_files
 
+  generate_ssl_certificate
+
   configure
 
 	echo "Laradose was installed successfully!"
@@ -37,11 +39,23 @@ copy_files() {
   echo "Copying files..."
 	cp -r ./laradose/laradose-master/docker ./docker
 	cp ./laradose/laradose-master/docker-compose.yml ./
-	cp ./laradose/laradose-master/.env.laradose ./
 	cp ./laradose/laradose-master/laradose.sh ./laradose.sh
+
+	cat ./laradose/laradose-master/.env >> ./.env
+	cat ./laradose/laradose-master/.env >> ./.env.example
 
 	rm -rf ./laradose
 	rm ./laradose.zip
+}
+
+generate_ssl_certificate() {
+  echo "Generating SSL certificate..."
+
+  # Create private and public key
+  openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout ./docker/nginx/keys/server.key -out ./docker/nginx/keys/server.crt -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=localhost"
+
+  # Create csr file
+  openssl req -new -key ./docker/nginx/keys/server.key -out ./docker/nginx/keys/server.csr -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=localhost"
 }
 
 update() {
@@ -53,10 +67,58 @@ update() {
 	exit 0
 }
 
+# Menu inspired by https://serverfault.com/a/298312
+additional_containers_menu() {
+    echo "Select the additional containers you want to enable:"
+    for i in ${!options[@]}; do
+        printf "%d%s. %s\n" $((i+1)) "${choices[i]:-}" "${options[i]}"
+    done
+    if [[ "$msg" ]]; then echo "$msg"; fi
+}
+
 configure() {
-	echo "Laradose configuration"
-	# TODO
-	pause
+  echo "Laradose configuration"
+
+  options=("Redis" "Laravel Horizon" "Laravel Echo Server" "phpMyAdmin")
+  folders=("redis" "horizon" "echo" "phpmyadmin")
+
+  prompt="Type the container number (again to uncheck, ENTER when done): "
+  while additional_containers_menu && read -rp "$prompt" num && [[ "$num" ]]; do
+      [[ "$num" != *[![:digit:]]* ]] &&
+      (( num > 0 && num <= ${#options[@]} )) ||
+      { msg="Invalid option: $num"; continue; }
+      ((num--)); msg="${options[num]} was ${choices[num]:+un}enabled"
+      [[ "${choices[num]}" ]] && choices[num]="" || choices[num]="+"
+  done
+
+  compose_file_input="docker-compose.yml:"
+  for i in ${!options[@]}; do
+      [[ "${choices[i]}" ]] && compose_file_input=$compose_file_input"/docker/${folders[i]}/docker-compose.override.yml":
+  done
+
+  # Remove last :
+  compose_file_input=${compose_file_input%?}
+
+  echo $compose_file_input
+
+  # Export the vars in .env into your shell:
+  export $(egrep -v '^#' .env | xargs)
+
+  sed -i "s#COMPOSE_FILE=.*#COMPOSE_FILE=${compose_file_input}#" ./.env
+
+  read -p "Nginx HTTPS port: [$NGINX_HTTPS_PORT] " nginx_https_port_input
+
+  if ! [[ -z "$nginx_https_port_input" ]]; then
+    sed -i "s/NGINX_HTTPS_PORT=.*/NGINX_HTTPS_PORT=${nginx_https_port_input}/" ./.env
+  fi
+
+  read -p "Nginx HTTP port: [$NGINX_HTTP_PORT] " nginx_http_port_input
+
+  if ! [[ -z "$nginx_http_port_input" ]]; then
+    sed -i "s/NGINX_HTTP_PORT=.*/NGINX_HTTP_PORT=${nginx_http_port_input}/" ./.env
+  fi
+
+  exit 0
 }
 
 uninstall() {
@@ -67,6 +129,7 @@ uninstall() {
 	rm ./.env.laradose
 
 	echo "Laradose was uninstalled successfully!"
+	echo "You can now remove additional entries from your .env and .env.example files"
 
 	exit 0
 }
@@ -100,7 +163,6 @@ read_options() {
 }
 
 # Credits https://raw.githubusercontent.com/rancher/k3s/master/install.sh
-# --- verify existence of a command executable ---
 verify_download() {
     verify_command
 
@@ -109,6 +171,7 @@ verify_download() {
     return 0
 }
 
+# --- verify existence of a command executable ---
 verify_command() {
     # Return failure if it doesn't exist or is no executable
     [ -x "$(which $1)" ] || return 1
@@ -144,6 +207,9 @@ while true
 do
   verify_command docker || fatal 'Docker is required for Laradose'
   verify_command docker-compose || fatal 'docker-compose is required for Laradose'
+  if ! [ -f ./.env ]; then
+    fatal 'You must have a .env file'
+  fi
 	show_menus
 	read_options
 done

@@ -36,8 +36,7 @@ A bash script is provided to install Laradose automatically. It will add the req
 and help you configure Laradose. This is the preferred method. To use it, `cd` into your project's folder and run:
 
 ```
-$ wget https://raw.githubusercontent.com/AdrienPoupa/laradose/master/laradose.sh
-$ chmod +x laradose.sh
+$ wget https://raw.githubusercontent.com/AdrienPoupa/laradose/master/laradose.sh && chmod +x laradose.sh
 $ ./laradose.sh
 ```
 
