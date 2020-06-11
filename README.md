@@ -47,7 +47,7 @@ You can install Laradose manually if you do not wish to use the script.
 1. Copy the following into your project folder:
 - The `docker` folder
 - The `docker-compose.yml` file
-2. Append the content of `.env.laradose` to your `.env` file
+2. Append the content of `.env` to your `.env` file
 3. Append the content of `webpack.mix.js` to your `webpack.mix.js` file
 
 If you need to import a database dump, place it in the `docker/mysql` folder. It will be imported automatically when

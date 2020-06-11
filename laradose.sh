@@ -4,10 +4,6 @@ DOWNLOADER=
 GITHUB_URL=https://github.com/AdrienPoupa/laradose
 VERSION=1.0.0
 
-pause() {
-  read -p "Press [Enter] key to continue..." fackEnterKey
-}
-
 install() {
   if [ -d ./docker ]; then
     fatal "Laradose is already installed"
@@ -61,7 +57,7 @@ generate_ssl_certificate() {
 update() {
 	echo "Be aware that this command will overwrite any modifications you made to Laradose configuration or Docker images."
 	echo "Please make sure that your folder is versioned so you can revert to the previous state if needed."
-	pause
+	read -r -p "Press any key to continue..."
 	echo "Updating Laradose..."
 	copy_files
 	exit 0
@@ -70,7 +66,7 @@ update() {
 # Menu inspired by https://serverfault.com/a/298312
 additional_containers_menu() {
     echo "Select the additional containers you want to enable:"
-    for i in ${!options[@]}; do
+    for i in "${!options[@]}"; do
         printf "%d%s. %s\n" $((i+1)) "${choices[i]:-}" "${options[i]}"
     done
     if [[ "$msg" ]]; then echo "$msg"; fi
@@ -92,33 +88,56 @@ configure() {
   done
 
   compose_file_input="docker-compose.yml:"
-  for i in ${!options[@]}; do
+  for i in "${!options[@]}"; do
       [[ "${choices[i]}" ]] && compose_file_input=$compose_file_input"/docker/${folders[i]}/docker-compose.override.yml":
   done
 
   # Remove last :
   compose_file_input=${compose_file_input%?}
 
-  echo $compose_file_input
-
   # Export the vars in .env into your shell:
-  export $(egrep -v '^#' .env | xargs)
+  export "$(grep -E -v '^#' .env | xargs)"
 
   sed -i "s#COMPOSE_FILE=.*#COMPOSE_FILE=${compose_file_input}#" ./.env
 
-  read -p "Nginx HTTPS port: [$NGINX_HTTPS_PORT] " nginx_https_port_input
+  env_input "NGINX_HTTPS_PORT" "Nginx HTTPS port"
 
-  if ! [[ -z "$nginx_https_port_input" ]]; then
-    sed -i "s/NGINX_HTTPS_PORT=.*/NGINX_HTTPS_PORT=${nginx_https_port_input}/" ./.env
+  env_input "NGINX_HTTP_PORT" "Nginx HTTP port"
+
+  env_input "DB_PORT" "MySQL port"
+
+  if [[ $compose_file_input == *"redis"* ]]; then
+    env_input "REDIS_PORT" "Redis port"
   fi
 
-  read -p "Nginx HTTP port: [$NGINX_HTTP_PORT] " nginx_http_port_input
-
-  if ! [[ -z "$nginx_http_port_input" ]]; then
-    sed -i "s/NGINX_HTTP_PORT=.*/NGINX_HTTP_PORT=${nginx_http_port_input}/" ./.env
+  if [[ $compose_file_input == *"phpmyadmin"* ]]; then
+      env_input "PHPMYADMIN_PORT" "phpMyAdmin port"
   fi
+
+  env_input "PHP_VERSION" "PHP Version (7.2, 7.3, 7.4)"
+
+  env_input "USER_ID" "Linux User ID for file permissions (current user: $(id -u))"
+
+  env_input "GROUP_ID" "Linux Group ID for file permissions (current group: $(id -g))"
+
+  env_input "MIX_MODE" "Mix mode can be one of: watch, hot, dev, prod"
+
+  env_input "MIX_BROWSERSYNC" "Enable Browsersync (enabled or disabled)"
+
+  echo "Configuration complete!"
 
   exit 0
+}
+
+env_input() {
+    key=$1
+    description=$2
+
+    read -r -p "$description: [${!key}] " new_value
+
+    if [ -n "$new_value" ]; then
+        sed -i "s/${key}=.*/${key}=${new_value}/" ./.env
+    fi
 }
 
 uninstall() {
@@ -152,7 +171,7 @@ show_menus() {
 
 read_options() {
 	local choice
-	read -p "Enter choice [1 - 4] " choice
+	read -r -p "Enter choice [1 - 4] " choice
 	case $choice in
 		1) install ;;
 		2) update ;;
@@ -174,7 +193,7 @@ verify_download() {
 # --- verify existence of a command executable ---
 verify_command() {
     # Return failure if it doesn't exist or is no executable
-    [ -x "$(which $1)" ] || return 1
+    [ -x "$(command -v "$1")" ] || return 1
 
     return 0
 }
@@ -184,10 +203,10 @@ download() {
 
     case $DOWNLOADER in
         curl)
-            curl -o $1 -sfL $2
+            curl -o "$1" -sfL "$2"
             ;;
         wget)
-            wget -qO $1 $2
+            wget -qO "$1" "$2"
             ;;
         *)
             fatal "Incorrect executable '$DOWNLOADER'"
