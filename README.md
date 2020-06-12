@@ -23,7 +23,7 @@ Out of the box, 6 containers are installed:
 
 ## 1. Requirements
 
-- [Docker](https://docs.docker.com/compose/install/)
+- [Docker](https://docs.docker.com/engine/install//)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
 This was tested on Linux. It may or may not work on Windows or MacOS.
@@ -48,7 +48,8 @@ You can install Laradose manually if you do not wish to use the script.
 - The `docker` folder
 - The `docker-compose.yml` file
 2. Append the content of `.env` to your `.env` file
-3. Append the content of `webpack.mix.js` to your `webpack.mix.js` file
+3. Set `DB_HOST=mysql` and `REDIS_HOST=redis`
+4. Append the content of `webpack.mix.js` to your `webpack.mix.js` file
 
 Set write permissions on the host
 

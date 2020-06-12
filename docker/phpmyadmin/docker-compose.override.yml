@@ -3,7 +3,6 @@ version: '3'
 services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       PMA_HOST: ${DB_HOST}

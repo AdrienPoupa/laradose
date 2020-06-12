@@ -89,7 +89,7 @@ configure() {
 
   compose_file_input="docker-compose.yml:"
   for i in "${!options[@]}"; do
-    [[ "${choices[i]}" ]] && compose_file_input=$compose_file_input"/docker/${folders[i]}/docker-compose.override.yml":
+    [[ "${choices[i]}" ]] && compose_file_input=$compose_file_input"docker/${folders[i]}/docker-compose.override.yml":
   done
 
   # Remove last :
@@ -97,6 +97,10 @@ configure() {
 
   # Export the vars in .env into your shell:
   export $(grep -E -v '^#' .env | xargs)
+
+  sed -i "s#COMPOSE_PROJECT_NAME=.*#COMPOSE_PROJECT_NAME=${APP_NAME}#" ./.env
+
+  sed -i "s#DB_HOST=.*#DB_HOST=mysql#" ./.env
 
   sed -i "s#COMPOSE_FILE=.*#COMPOSE_FILE=${compose_file_input}#" ./.env
 
@@ -107,7 +111,9 @@ configure() {
   env_input "DB_PORT" "MySQL port"
 
   if [[ $compose_file_input == *"redis"* ]]; then
-  env_input "REDIS_PORT" "Redis port"
+    sed -i "s#REDIS_HOST=.*#REDIS_HOST=redis#" ./.env
+
+    env_input "REDIS_PORT" "Redis port"
   fi
 
   if [[ $compose_file_input == *"phpmyadmin"* ]]; then
@@ -124,7 +130,7 @@ configure() {
 
   env_input "MIX_BROWSERSYNC" "Enable Browsersync (enabled or disabled)"
 
-  echo "Configuration complete!"
+  echo "Configuration complete! Restart docker-compose to apply the changes."
 
   exit 0
 }

@@ -6,7 +6,6 @@ services:
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
-    container_name: horizon
     volumes:
       - ./:/var/www
     depends_on:
