@@ -42,7 +42,7 @@ copy_files() {
   cat ./laradose/laradose-master/.env >> ./.env
   cat ./laradose/laradose-master/.env >> ./.env.example
 
-  cat ./laradose/laradose-master/webpack-mix.js >> ./webpack-mix.js
+  cat ./laradose/laradose-master/webpack.mix.js >> ./webpack.mix.js
 
   rm -rf ./laradose
   rm ./laradose.zip
