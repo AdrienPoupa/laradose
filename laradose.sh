@@ -102,6 +102,8 @@ configure() {
 
   sed -i "s#DB_HOST=.*#DB_HOST=mysql#" ./.env
 
+  sed -i "s#DB_PASSWORD=.*#DB_PASSWORD=${DB_USERNAME}#" ./.env
+
   sed -i "s#COMPOSE_FILE=.*#COMPOSE_FILE=${compose_file_input}#" ./.env
 
   env_input "NGINX_HTTPS_PORT" "Nginx HTTPS port"
