@@ -15,13 +15,9 @@ install() {
 
   generate_ssl_certificate
 
-  configure
-
   post_install_commands
 
-  echo "Laradose was installed successfully!"
-
-  exit 0
+  configure
 }
 
 copy_files() {

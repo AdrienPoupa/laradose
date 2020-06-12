@@ -1,6 +1,6 @@
 # Laradose
 # Author: Adrien Poupa
-# https://github.com/AdrienPoupa/laravel-docker-compose
+# https://github.com/AdrienPoupa/laradose
 
 version: '3'
 

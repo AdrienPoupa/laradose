@@ -50,9 +50,6 @@ You can install Laradose manually if you do not wish to use the script.
 2. Append the content of `.env` to your `.env` file
 3. Append the content of `webpack.mix.js` to your `webpack.mix.js` file
 
-If you need to import a database dump, place it in the `docker/mysql` folder. It will be imported automatically when
-the MySQL container boots.
-
 Set write permissions on the host
 
 ```
@@ -60,6 +57,9 @@ $ chmod -R 755 .
 ```
 
 ## 3. Usage
+
+If you need to import a database dump, place it in the `docker/mysql` folder. It will be imported automatically when
+the MySQL container boots.
 
 ### 3.1 Commands
 
