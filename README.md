@@ -53,44 +53,20 @@ You can install Laradose manually if you do not wish to use the script.
 If you need to import a database dump, place it in the `docker/mysql` folder. It will be imported automatically when
 the MySQL container boots.
 
-Build the containers
+Set write permissions on the host
 
 ```
-$ sudo docker-compose build
-```
-
-Install Composer dependencies
-
-```
-$ sudo docker-compose run --rm composer install
-```
-
-Install NPM dependencies
-
-```
-$ sudo docker-compose run --rm --entrypoint npm npm install
-```
-
-Generate application key
-
-```
-$ sudo docker-compose run --rm artisan key:generate
-```
-
-Set storage permissions on the host
-
-```
-$ chmod -R 755 storage
+$ chmod -R 755 .
 ```
 
 ## 3. Usage
 
 ### 3.1 Commands
 
-Run the project
+Run the project. It will build the containers the first time.
 
 ```
-$ sudo docker-compose run -d
+$ sudo docker-compose up -d
 ```
 
 By default, your application will be available at
@@ -113,13 +89,19 @@ $ sudo docker-compose logs nginx
 Run artisan commands
 
 ```
-$ sudo docker-compose run --rm artisan my-command
+$ sudo docker-compose run --rm artisan <command>
 ```
 
-For example, migrate your database:
+Install Composer dependencies
 
 ```
-$ sudo docker-compose run --rm artisan migrate
+$ sudo docker-compose run --rm composer install
+```
+
+Install NPM dependencies
+
+```
+$ sudo docker-compose run --rm --entrypoint npm npm install
 ```
 
 Remove the volumes (needed if you want to reimport the database)
@@ -131,13 +113,13 @@ $ sudo docker-compose down -v
 Restart a container:
 
 ```
-$ sudo docker-compose restart container-name
+$ sudo docker-compose restart <container-name>
 ```
 
-For example, to restart PHP:
+Rebuild the containers:
 
 ```
-$ sudo docker-compose restart php
+$ sudo docker-compose build
 ```
 
 ### 3.2 Adding additional containers

@@ -17,6 +17,8 @@ install() {
 
   configure
 
+  post_install_commands
+
   echo "Laradose was installed successfully!"
 
   exit 0
@@ -40,6 +42,8 @@ copy_files() {
   cat ./laradose/laradose-master/.env >> ./.env
   cat ./laradose/laradose-master/.env >> ./.env.example
 
+  cat ./laradose/laradose-master/webpack-mix.js >> ./webpack-mix.js
+
   rm -rf ./laradose
   rm ./laradose.zip
 }
@@ -48,10 +52,10 @@ generate_ssl_certificate() {
   echo "Generating SSL certificate..."
 
   # Create private and public key
-  openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout ./docker/nginx/keys/server.key -out ./docker/nginx/keys/server.crt -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=localhost"
+  openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout ./docker/nginx/keys/server.key -out ./docker/nginx/keys/server.crt -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=localhost" > /dev/null 2>&1
 
   # Create csr file
-  openssl req -new -key ./docker/nginx/keys/server.key -out ./docker/nginx/keys/server.csr -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=localhost"
+  openssl req -new -key ./docker/nginx/keys/server.key -out ./docker/nginx/keys/server.csr -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=localhost" > /dev/null 2>&1
 }
 
 update() {
@@ -138,6 +142,13 @@ env_input() {
   if [ -n "$new_value" ]; then
     sed -i "s/${key}=.*/${key}=${new_value}/" ./.env
   fi
+}
+
+post_install_commands() {
+  echo "Applying permissions..."
+  chmod -R 755 .
+
+  chmod +x artisan
 }
 
 uninstall() {
