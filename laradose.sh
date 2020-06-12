@@ -96,7 +96,7 @@ configure() {
   compose_file_input=${compose_file_input%?}
 
   # Export the vars in .env into your shell:
-  export "$(grep -E -v '^#' .env | xargs)"
+  export $(grep -E -v '^#' .env | xargs)
 
   sed -i "s#COMPOSE_FILE=.*#COMPOSE_FILE=${compose_file_input}#" ./.env
 
