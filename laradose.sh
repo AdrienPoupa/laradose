@@ -162,6 +162,10 @@ post_install_commands() {
   chmod -R 755 .
 
   chmod +x artisan
+
+  # Add the https argument to the "hot" npm run option,
+  # since the webpack option passed in webpack is apparently not enough
+  sed -i "s/--disable-host-check/--disable-host-check --https/" package.json
 }
 
 uninstall() {
@@ -186,21 +190,19 @@ show_menus() {
   echo "Version: "${VERSION}
   echo "URL: "${GITHUB_URL}
   echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-  echo "1. Install"
+  echo "1. Configure"
   echo "2. Update"
-  echo "3. Configure"
-  echo "4. Uninstall"
+  echo "3. Uninstall"
   echo "0. Exit"
 }
 
 read_options() {
   local choice
-  read -r -p "Enter choice [1 - 4] " choice
+  read -r -p "Enter choice [1 - 3] " choice
   case $choice in
-    1) install ;;
+    1) configure ;;
     2) update ;;
-    3) configure ;;
-    4) uninstall ;;
+    3) uninstall ;;
     *) exit 0;;
   esac
 }
@@ -245,6 +247,12 @@ fatal() {
   echo '[ERROR]' "$@" >&2
   exit 1
 }
+
+if [ "$1" == "--install" ]
+then
+  install
+  exit 0
+fi
 
 while true
 do

@@ -37,7 +37,7 @@ and help you configure Laradose. This is the preferred method. To use it, `cd` i
 
 ```
 $ wget https://raw.githubusercontent.com/AdrienPoupa/laradose/master/laradose.sh && chmod +x laradose.sh
-$ ./laradose.sh
+$ ./laradose.sh --install
 ```
 
 ### 2.2 Manual installation
