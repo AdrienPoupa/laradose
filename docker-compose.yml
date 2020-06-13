@@ -73,16 +73,21 @@ services:
 
   npm:
     image: node:12
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+      - "${WEBPACK_PORT}:${WEBPACK_PORT}"
     environment:
       MIX_MODE: ${MIX_MODE}
       MIX_BROWSERSYNC: ${MIX_BROWSERSYNC}
     entrypoint: "npm run ${MIX_MODE}"
     volumes:
       - ./:/var/www
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./docker/nginx/keys:/etc/ssl
     working_dir: /var/www
     user: "${USER_ID}:${GROUP_ID}"
+    networks:
+      - laravel
 
 networks:
   laravel:

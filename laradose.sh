@@ -119,6 +119,8 @@ configure() {
 
   env_input "DB_PORT" "MySQL port"
 
+  env_input "WEBPACK_PORT" "Webpack Development Server port"
+
   if [[ $compose_file_input == *"redis"* ]]; then
     sed -i "s#REDIS_HOST=.*#REDIS_HOST=redis#" ./.env
 
