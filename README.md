@@ -20,7 +20,7 @@ Out of the box, 6 containers are installed:
    1. [Commands](#31-commands)
    2. [Adding additional containers](#32-adding-additional-containers)
 4. [Container Specific Instructions](#4-container-specific-instructions)
-   1. [NPM](#41)
+   1. [NPM](#41-npm)
       1. [Hot Module Reload](#411-hot-module-reload)
       2. [Browsersync](#412-browsersync)
 5. [Q&A](#5-qa)
