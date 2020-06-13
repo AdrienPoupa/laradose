@@ -19,7 +19,11 @@ Out of the box, 6 containers are installed:
 3. [Usage](#3-usage)
    1. [Commands](#31-commands)
    2. [Adding additional containers](#32-adding-additional-containers)
-4. [Q&A](#4-qa)
+4. [Container Specific Instructions](#4-container-specific-instructions)
+   1. [NPM](#41)
+      1. [Hot Module Reload](#411-hot-module-reload)
+      2. [Browsersync](#412-browsersync)
+5. [Q&A](#5-qa)
 
 ## 1. Requirements
 
@@ -141,7 +145,29 @@ For example, to add Redis, do:
 COMPOSE_FILE=docker-compose.yml:docker/redis/docker-compose.override.yml
 ```
 
-## 4. Q&A
+## 4. Container Specific Instructions
+
+### 4.1 NPM
+
+#### 4.1.1 Hot Module Reload
+
+Make sure that your .js files are loaded using the `mix` helper as shown here:
+
+```
+<script src="{{ mix('js/app.js') }}" defer></script>
+```
+
+#### 4.1.2 Browsersync
+
+Add the following to your Blade layout:
+
+```
+@if(config('app.env') === 'local')
+    <script async src='https://localhost:3000/browser-sync/browser-sync-client.js'></script>
+@endif
+```
+
+## 5. Q&A
 
 1. Why use this over Laradock?
 
