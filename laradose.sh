@@ -67,7 +67,7 @@ update() {
 additional_containers_menu() {
   echo "Select the additional containers you want to enable:"
   for i in "${!options[@]}"; do
-    printf "%d%s. %s\n" $((i+1)) "${choices[i]:-}" "${options[i]}"
+    printf "%d. %s %s\n" $((i+1)) "${options[i]}" "${choices[i]:-}"
   done
   if [[ "$msg" ]]; then echo "$msg"; fi
 }
@@ -75,8 +75,18 @@ additional_containers_menu() {
 configure() {
   echo "Laradose configuration"
 
+  # Export the vars in .env into your shell:
+  export $(grep -E -v '^#' .env | xargs)
+
   options=("Redis" "Laravel Horizon" "Laravel Echo Server" "phpMyAdmin")
   folders=("redis" "horizon" "echo" "phpmyadmin")
+
+  # Fill already selected options
+  for i in "${!folders[@]}"; do
+    if [[ $COMPOSE_FILE == *${folders[i]}* ]]; then
+      choices[i]=$'\u2713'
+    fi
+  done
 
   prompt="Type the container number (again to uncheck, ENTER when done): "
   while additional_containers_menu && read -rp "$prompt" num && [[ "$num" ]]; do
@@ -84,7 +94,7 @@ configure() {
     (( num > 0 && num <= ${#options[@]} )) ||
     { msg="Invalid option: $num"; continue; }
     ((num--)); msg="${options[num]} was ${choices[num]:+un}enabled"
-    [[ "${choices[num]}" ]] && choices[num]="" || choices[num]="+"
+    [[ "${choices[num]}" ]] && choices[num]="" || choices[num]=$'\u2713'
   done
 
   compose_file_input="docker-compose.yml:"
@@ -94,9 +104,6 @@ configure() {
 
   # Remove last :
   compose_file_input=${compose_file_input%?}
-
-  # Export the vars in .env into your shell:
-  export $(grep -E -v '^#' .env | xargs)
 
   sed -i "s#COMPOSE_PROJECT_NAME=.*#COMPOSE_PROJECT_NAME=${APP_NAME}#" ./.env
 
