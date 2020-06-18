@@ -215,3 +215,8 @@ tell Git to fetch them when cloning a repo: this creates an extra step when sett
 
 Moreover, submodules are not updated automatically; a trivial change in a Dockerfile
 would result in a mess unless you fork the Git submodule repo by yourself but that creates more friction.
+
+3. Permission issue!
+
+Make sure your `USER_ID` and `GROUP_ID` environment variables match your logged in user. Then, in your project's folder, 
+do `chown -R $(id -u):$(id -g) . && chmod -R 755 .`
