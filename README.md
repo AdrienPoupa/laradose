@@ -135,6 +135,7 @@ In addition to the 6 base containers, additional containers are offered:
 - Laravel Horizon
 - Laravel Echo Server
 - PHPMyAdmin
+- MailHog
 
 To add an additional container, modify your `.env`'s `COMPOSE_FILE` variable to add the path to the 
 additional `docker-compose.override.yml` file. 
