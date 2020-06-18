@@ -133,7 +133,6 @@ In addition to the 6 base containers, additional containers are offered:
 
 - Redis
 - Laravel Horizon
-- Laravel Echo Server
 - PHPMyAdmin
 - MailHog
 
