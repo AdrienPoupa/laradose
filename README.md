@@ -89,6 +89,12 @@ the MySQL container boots.
 
 ### 3.1 Configuration
 
+Run the Laradose script:
+
+```
+$ ./laradose.sh
+```
+
 Use the `1. Configure` option of the Laradose script to configure your installation. You will be able to enable and
 disable the additional containers and change the options shown in [Available Parameters](#5-available-parameters).
 Be aware the script will update your `.env` file.
@@ -218,5 +224,5 @@ would result in a mess unless you fork the Git submodule repo by yourself but th
 
 3. Permission issue!
 
-Make sure your `USER_ID` and `GROUP_ID` environment variables match your logged in user. Then, in your project's folder, 
+Make sure your `USER_ID` and `GROUP_ID` environment variables match your current user. Then, in your project's folder, 
 do `chown -R $(id -u):$(id -g) . && chmod -R 755 .`

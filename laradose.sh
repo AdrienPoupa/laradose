@@ -175,6 +175,7 @@ env_input() {
 
 post_install_commands() {
   echo "Applying permissions..."
+  chown -R "$(id -u)":"$(id -g)" .
   chmod -R 755 .
 
   chmod +x artisan
