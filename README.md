@@ -1,16 +1,23 @@
 # Laradose
 
 Laradose aims to bring a light yet powerful and configurable Docker compose configuration to run a Laravel
-application locally. It is not intended for production.
+application locally. Installation and configuration are made easy with the provided Bash script. 
+Six containers are installed out of the box:
 
-Out of the box, 6 containers are installed:
-
-- MySQL
-- PHP
+- PHP with configurable versions
 - Nginx
+- MySQL with automatic database import
 - Artisan
 - Composer
-- NPM
+- NPM with Hot Module Reload and Browsersync support
+
+Additional containers can be enabled:
+
+- Queues: Laravel's default queue manager
+- Redis: in-memory database to store cache
+- Laravel Horizon: Redis-powered queue manager
+- MailHog: local email server
+- PHPMyAdmin: database management
 
 1. [Requirements](#1-requirements)
 2. [Installation Instructions](#1-installation-instructions)
@@ -88,7 +95,7 @@ Check a container's logs:
 $ sudo docker-compose logs container-name
 ```
 
-For example, check Nginx's logs:
+For example, check Nginx logs:
 
 ```
 $ sudo docker-compose logs nginx
@@ -132,14 +139,7 @@ $ sudo docker-compose build
 
 ### 3.2 Adding additional containers
 
-In addition to the 6 base containers, additional containers are offered:
-
-- Redis
-- Laravel Horizon
-- PHPMyAdmin
-- MailHog
-
-To add an additional container, modify your `.env`'s `COMPOSE_FILE` variable to add the path to the 
+To enable an additional container, modify your `.env`'s `COMPOSE_FILE` variable to add the path to the 
 additional `docker-compose.override.yml` file. 
 
 For example, to add Redis, do:
@@ -154,7 +154,7 @@ COMPOSE_FILE=docker-compose.yml:docker/redis/docker-compose.override.yml
 
 #### 4.1.1 Hot Module Reload
 
-Make sure that your .js files are loaded using the `mix` helper as shown here:
+Make sure your .js files load using the `mix` helper as shown here:
 
 ```
 <script src="{{ mix('js/app.js') }}" defer></script>
@@ -177,17 +177,17 @@ Add the following to your Blade layout:
 | COMPOSE_PROJECT_NAME   | APP_NAME           | Sets the project name. This value is prepended along with the service name to the container on start up.        |
 | COMPOSE_PATH_SEPARATOR | :                  | If set, the value of the COMPOSE_FILE environment variable is separated using this character as path separator. |
 | COMPOSE_FILE           | docker-compose.yml | Specify the path to a Compose file.                                                                             |
-| NGINX_HTTPS_PORT       | 4443               | HTTPS port of the Nginx container                                                                               |
-| NGINX_HTTP_PORT        | 8080               | HTTP port of the Nginx container                                                                                |
-| PHPMYADMIN_PORT        | 8081               | HTTP port of the phpMyAdmin container                                                                           |
+| NGINX_HTTPS_PORT       | 4443               | HTTPS port of the Nginx container. Accessible at https://localhost:4443                                         |
+| NGINX_HTTP_PORT        | 8080               | HTTP port of the Nginx container. Accessible at http://localhost:8080                                           |
+| PHPMYADMIN_PORT        | 8081               | HTTP port of the phpMyAdmin container. Accessible at http://localhost:8081                                      |
 | WEBPACK_PORT           | 4444               | Webpack port, used to serve JavaScript files with the `mix` helper function.                                    |
-| MAILHOG_PORT           | 8025               | HTTP port of the MailHog container                                                                              |
+| MAILHOG_PORT           | 8025               | HTTP port of the MailHog container. Accessible at http://localhost:8025                                         |
 | BROWSERSYNC_PORT       | 3000               | HTTP port of the Browsersync service of the NPM container                                                       |
-| BROWSERSYNC_ADMIN_PORT | 3001               | HTTP port of the Browsersync admin panel of the NPM container                                                   |
-| PHP_VERSION            | 7.4                | PHP Version; possible values = `7.2`, `7.3`, `7.4`                                                              |
+| BROWSERSYNC_ADMIN_PORT | 3001               | HTTP port of the Browsersync admin panel of the NPM container Accessible at https://localhost:3001              |
+| PHP_VERSION            | 7.4                | PHP Version. Can be one of: 7.2, 7.3, 7.4                                                                       |
 | USER_ID                | 1000               | Linux User ID for file and folder permissions                                                                   |
 | GROUP_ID               | 1000               | Linux Group ID for file and folder permissions                                                                  |
-| MIX_MODE               | watch              | Laravel Mix mode. Can be one of: `watch`, `hot`, `dev`, `prod`.                                                 |
+| MIX_MODE               | watch              | Laravel Mix mode. Can be one of: watch, hot, dev, prod.                                                         |
 | MIX_BROWSERSYNC        | disabled           | Enable Browsersync (enabled or disabled)                                                                        |
 
 ## 6. Q&A
@@ -204,8 +204,8 @@ long Docker-compose file necessary?).
 2. Why version the Docker files?
 
 I think this approach makes sense if you want to customize your local environment, like if you want to add a container,
-modify a Dockerfile, change an entrypoint... I played a bit with Git submodules but I found that you have to explicitly
+modify a Dockerfile, change an entrypoint... I played a bit with Git submodules, but I found that you have to explicitly
 tell Git to fetch them when cloning a repo: this creates an extra step when setting up the project.
 
-Moreover, submodules are not updated automatically and a trivial change in a Dockerfile
+Moreover, submodules are not updated automatically; a trivial change in a Dockerfile
 would result in a mess unless you fork the Git submodule repo by yourself but that creates more friction.
