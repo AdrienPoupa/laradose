@@ -20,12 +20,12 @@ Additional containers can be enabled:
 - PHPMyAdmin: database management
 
 1. [Requirements](#1-requirements)
-2. [Installation Instructions](#1-installation-instructions)
+2. [Installation Instructions](#2-installation-instructions)
    1. [Automated installation](#21-automated-installation)
    2. [Manual installation](#22-manual-installation)
 3. [Usage](#3-usage)
-   2. [Adding additional containers](#31-configuration)
-   1. [Commands](#32-commands)
+   1. [Configuration](#31-configuration)
+   2. [Commands](#32-commands)
 4. [Container Specific Instructions](#4-container-specific-instructions)
    1. [NPM](#41-npm)
       1. [Hot Module Reload](#411-hot-module-reload)
@@ -51,6 +51,17 @@ and help you configure Laradose. This is the preferred method. To use it, `cd` i
 $ wget https://raw.githubusercontent.com/AdrienPoupa/laradose/master/laradose.sh && chmod +x laradose.sh
 $ ./laradose.sh --install
 ```
+
+The script will:
+
+1. Download this repository's files
+2. Copy them in your project's folder
+3. Generate the SSL certificates needed for HTTPS
+4. Apply the correct permissions
+5. Run the configuration tool to specify which containers should be enabled, on which ports, etc
+
+It is recommended to commit your files before running the script,
+so you can rollback the modifications it made if needed.
 
 ### 2.2 Manual installation
 
@@ -80,7 +91,7 @@ the MySQL container boots.
 
 Use the `1. Configure` option of the Laradose script to configure your installation. You will be able to enable and
 disable the additional containers and change the options shown in [Available Parameters](#5-available-parameters).
-Be aware the script will update your `.wnv` file.
+Be aware the script will update your `.env` file.
 
 ### 3.2 Commands
 
