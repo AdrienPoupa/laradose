@@ -23,7 +23,8 @@ Out of the box, 6 containers are installed:
    1. [NPM](#41-npm)
       1. [Hot Module Reload](#411-hot-module-reload)
       2. [Browsersync](#412-browsersync)
-5. [Q&A](#5-qa)
+5. [Available Parameters](#5-available-parameters)
+6. [Q&A](#6-qa)
 
 ## 1. Requirements
 
@@ -60,6 +61,8 @@ Set write permissions on the host
 ```
 $ chmod -R 755 .
 ```
+
+You can configure the environment variables manually as shown in [Available Parameters](#5-available-parameters).
 
 ## 3. Usage
 
@@ -167,7 +170,27 @@ Add the following to your Blade layout:
 @endif
 ```
 
-## 5. Q&A
+## 5. Available Parameters
+
+| Parameter Name         | Default Value      | Description                                                                                                     |
+|------------------------|--------------------|-----------------------------------------------------------------------------------------------------------------|
+| COMPOSE_PROJECT_NAME   | APP_NAME           | Sets the project name. This value is prepended along with the service name to the container on start up.        |
+| COMPOSE_PATH_SEPARATOR | :                  | If set, the value of the COMPOSE_FILE environment variable is separated using this character as path separator. |
+| COMPOSE_FILE           | docker-compose.yml | Specify the path to a Compose file.                                                                             |
+| NGINX_HTTPS_PORT       | 4443               | HTTPS port of the Nginx container                                                                               |
+| NGINX_HTTP_PORT        | 8080               | HTTP port of the Nginx container                                                                                |
+| PHPMYADMIN_PORT        | 8081               | HTTP port of the phpMyAdmin container                                                                           |
+| WEBPACK_PORT           | 4444               | Webpack port, used to serve JavaScript files with the `mix` helper function.                                    |
+| MAILHOG_PORT           | 8025               | HTTP port of the MailHog container                                                                              |
+| BROWSERSYNC_PORT       | 3000               | HTTP port of the Browsersync service of the NPM container                                                       |
+| BROWSERSYNC_ADMIN_PORT | 3001               | HTTP port of the Browsersync admin panel of the NPM container                                                   |
+| PHP_VERSION            | 7.4                | PHP Version; possible values = `7.2`, `7.3`, `7.4`                                                              |
+| USER_ID                | 1000               | Linux User ID for file and folder permissions                                                                   |
+| GROUP_ID               | 1000               | Linux Group ID for file and folder permissions                                                                  |
+| MIX_MODE               | watch              | Laravel Mix mode. Can be one of: `watch`, `hot`, `dev`, `prod`.                                                 |
+| MIX_BROWSERSYNC        | disabled           | Enable Browsersync (enabled or disabled)                                                                        |
+
+## 6. Q&A
 
 1. Why use this over Laradock?
 
