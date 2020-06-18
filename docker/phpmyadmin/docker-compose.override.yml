@@ -11,6 +11,6 @@ services:
       PMA_PASSWORD: ${DB_PASSWORD}
       UPLOAD_LIMIT: 100000000
     ports:
-      - "${PHPMYADMIN_PORT:-8081}:80"
+      - "${PHPMYADMIN_PORT}:80"
     networks:
       - laravel

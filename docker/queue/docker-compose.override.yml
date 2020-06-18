@@ -1,8 +1,7 @@
 version: '3'
 
 services:
-  # Redis should be installed when using Laravel Horizon
-  horizon:
+  queue:
     environment:
       PHP_VERSION: ${PHP_VERSION}
     build:
@@ -16,7 +15,7 @@ services:
       - mysql
       - composer
     working_dir: /var/www
-    entrypoint: ['/var/www/artisan', 'horizon']
+    entrypoint: ['/var/www/artisan', 'queue:work']
     user: "${USER_ID}:${GROUP_ID}"
     networks:
       - laravel

@@ -78,8 +78,8 @@ configure() {
   # Export the vars in .env into your shell:
   export $(grep -E -v '^#' .env | xargs)
 
-  options=("Redis" "Laravel Horizon" "phpMyAdmin" "MailHog")
-  folders=("redis" "horizon" "phpmyadmin" "mailhog")
+  options=("Queue" "Redis" "Laravel Horizon" "phpMyAdmin" "MailHog")
+  folders=("queue" "redis" "horizon" "phpmyadmin" "mailhog")
 
   # Fill already selected options
   for i in "${!folders[@]}"; do
