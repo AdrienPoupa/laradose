@@ -4,11 +4,11 @@ Laradose aims to bring a light yet powerful and configurable Docker compose conf
 application locally. Installation and configuration are made easy with the provided Bash script. 
 Six containers are installed out of the box:
 
-- PHP with configurable versions
-- Nginx
+- PHP with configurable versions and xdebug support
+- Nginx with HTTPS support
 - MySQL with automatic database import
-- Artisan
-- Composer
+- Artisan to run Laravel Artisan commands
+- Composer to install PHP packages
 - NPM with Hot Module Reload and Browsersync support
 
 Additional containers can be enabled:
@@ -24,8 +24,8 @@ Additional containers can be enabled:
    1. [Automated installation](#21-automated-installation)
    2. [Manual installation](#22-manual-installation)
 3. [Usage](#3-usage)
-   1. [Commands](#31-commands)
-   2. [Adding additional containers](#32-adding-additional-containers)
+   2. [Adding additional containers](#31-configuration)
+   1. [Commands](#32-commands)
 4. [Container Specific Instructions](#4-container-specific-instructions)
    1. [NPM](#41-npm)
       1. [Hot Module Reload](#411-hot-module-reload)
@@ -44,7 +44,7 @@ This was tested on Linux. It may or may not work on Windows or MacOS.
 
 ### 2.1 Automated installation
 
-A bash script is provided to install Laradose automatically. It will add the required files to your project's folder
+A Bash script is provided to install Laradose automatically. It will add the required files to your project's folder
 and help you configure Laradose. This is the preferred method. To use it, `cd` into your project's folder and run:
 
 ```
@@ -76,7 +76,13 @@ You can configure the environment variables manually as shown in [Available Para
 If you need to import a database dump, place it in the `docker/mysql` folder. It will be imported automatically when
 the MySQL container boots.
 
-### 3.1 Commands
+### 3.1 Configuration
+
+Use the `1. Configure` option of the Laradose script to configure your installation. You will be able to enable and
+disable the additional containers and change the options shown in [Available Parameters](#5-available-parameters).
+Be aware the script will update your `.wnv` file.
+
+### 3.2 Commands
 
 Run the project. It will build the containers the first time.
 
@@ -135,17 +141,6 @@ Rebuild the containers:
 
 ```
 $ sudo docker-compose build
-```
-
-### 3.2 Adding additional containers
-
-To enable an additional container, modify your `.env`'s `COMPOSE_FILE` variable to add the path to the 
-additional `docker-compose.override.yml` file. 
-
-For example, to add Redis, do:
-
-```
-COMPOSE_FILE=docker-compose.yml:docker/redis/docker-compose.override.yml
 ```
 
 ## 4. Container Specific Instructions
