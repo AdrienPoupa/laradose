@@ -78,8 +78,8 @@ configure() {
   # Export the vars in .env into your shell:
   export $(grep -E -v '^#' .env | xargs)
 
-  options=("Redis" "Laravel Horizon" "Laravel Echo Server" "phpMyAdmin")
-  folders=("redis" "horizon" "echo" "phpmyadmin")
+  options=("Redis" "Laravel Horizon" "Laravel Echo Server" "phpMyAdmin" "MailHog")
+  folders=("redis" "horizon" "echo" "phpmyadmin" "mailhog")
 
   # Fill already selected options
   for i in "${!folders[@]}"; do
@@ -129,6 +129,16 @@ configure() {
 
   if [[ $compose_file_input == *"phpmyadmin"* ]]; then
     env_input "PHPMYADMIN_PORT" "phpMyAdmin port"
+  fi
+
+  if [[ $compose_file_input == *"mailhog"* ]]; then
+    sed -i "s#MAIL_HOST=.*#MAIL_HOST=mailhog#" ./.env
+
+    sed -i "s#MAIL_MAILER=.*#MAIL_MAILER=smtp#" ./.env
+
+    sed -i "s#MAIL_PORT=.*#MAIL_PORT=1025#" ./.env
+
+    env_input "MAILHOG_PORT" "MailHog port"
   fi
 
   env_input "PHP_VERSION" "PHP Version (7.2, 7.3, 7.4)"

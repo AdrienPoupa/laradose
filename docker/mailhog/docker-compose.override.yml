@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "${MAIL_PORT}:1025"
+      - "${MAILHOG_PORT}:8025"
+    networks:
+      - laravel
