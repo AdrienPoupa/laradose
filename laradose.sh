@@ -35,8 +35,8 @@ copy_files() {
   cp ./laradose/laradose-master/docker-compose.yml ./
   cp ./laradose/laradose-master/laradose.sh ./laradose.sh
 
-  cat ./laradose/laradose-master/.env >> ./.env
-  cat ./laradose/laradose-master/.env >> ./.env.example
+  cat ./laradose/laradose-master/.env.example >> ./.env.example
+  cat ./laradose/laradose-master/.env.example >> ./.env
 
   cat ./laradose/laradose-master/webpack.mix.js >> ./webpack.mix.js
 
@@ -141,6 +141,12 @@ configure() {
 
   env_input "MIX_BROWSERSYNC" "Enable Browsersync (enabled or disabled)"
 
+  if [[ $new_value == "enabled" || $new_value == "" && $MIX_BROWSERSYNC == "enabled" ]]; then
+    env_input "MIX_BROWSERSYNC_PORT" "Browsersync port"
+
+    env_input "MIX_BROWSERSYNC_ADMIN_PORT" "Browsersync admin port"
+  fi
+
   echo "Configuration complete! Restart docker-compose to apply the changes."
 
   exit 0
@@ -173,7 +179,6 @@ uninstall() {
 
   rm -rf ./docker
   rm ./docker-compose.yml
-  rm ./.env.laradose
 
   echo "Laradose was uninstalled successfully!"
   echo "You can now remove additional entries from your .env and .env.example files"

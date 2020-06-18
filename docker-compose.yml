@@ -74,8 +74,8 @@ services:
   npm:
     image: node:12
     ports:
-      - "3000:3000"
-      - "3001:3001"
+      - "${BROWSERSYNC_PORT}:3000"
+      - "${BROWSERSYNC_ADMIN_PORT}:3001"
       - "${WEBPACK_PORT}:${WEBPACK_PORT}"
     environment:
       MIX_MODE: ${MIX_MODE}
