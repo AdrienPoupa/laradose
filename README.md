@@ -171,7 +171,7 @@ In PHPStorm go to: `Languages & Frameworks` > `PHP` > `Servers` > and set the fo
 The name field must match `PHP_SERVER_NAME` (set to `laravel` by default). The host is set to `localhost`, the port
 to the HTTP port, which is 8080 by defaut. The paths mappings are set appropriately.
 
-If you are using Windows on Mac, in the Docker-compose, you can add the following environment variable:
+If you are using Windows or MacOS, in the Docker-compose, you can add the following environment variable:
 
 ```
 XDEBUG_CONFIG: "remote_host=host.docker.internal"
