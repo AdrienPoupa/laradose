@@ -143,6 +143,8 @@ configure() {
 
   env_input "PHP_VERSION" "PHP Version (7.2, 7.3, 7.4)"
 
+  env_input "PHP_SERVER_NAME" "PHP Server Name for xdebug"
+
   env_input "USER_ID" "Linux User ID for file permissions (current user: $(id -u))"
 
   env_input "GROUP_ID" "Linux Group ID for file permissions (current group: $(id -g))"

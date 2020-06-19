@@ -27,9 +27,13 @@ Additional containers can be enabled:
    1. [Configuration](#31-configuration)
    2. [Commands](#32-commands)
 4. [Container Specific Instructions](#4-container-specific-instructions)
-   1. [NPM](#41-npm)
-      1. [Hot Module Reload](#411-hot-module-reload)
-      2. [Browsersync](#412-browsersync)
+   1. [PHP](#41-php)
+      1. [Setup xdebug for PHPStorm](#411-setup-xdebug-for-phpstorm)
+   2. [MySQL](#42-mysql)
+      1. [Import a dump](#421-import-a-dump)
+   3. [NPM](#43-npm)
+      1. [Hot Module Reload](#431-hot-module-reload)
+      2. [Browsersync](#432-browsersync)
 5. [Available Parameters](#5-available-parameters)
 6. [Q&A](#6-qa)
 
@@ -142,12 +146,6 @@ Install NPM dependencies
 $ sudo docker-compose run --rm --entrypoint npm npm install
 ```
 
-Remove the volumes (needed if you want to reimport the database)
-
-```
-$ sudo docker-compose down -v
-```
-
 Restart a container:
 
 ```
@@ -162,9 +160,38 @@ $ sudo docker-compose build
 
 ## 4. Container Specific Instructions
 
-### 4.1 NPM
+### 4.1 PHP
 
-#### 4.1.1 Hot Module Reload
+#### 4.1.1 Setup xdebug for PHPStorm
+
+In PHPStorm go to: `Languages & Frameworks` > `PHP` > `Servers` > and set the following settings:
+
+![PHPStorm configuration](https://i.imgur.com/b8MwViH.png)
+
+The name field must match `PHP_SERVER_NAME` (set to `laravel` by default). The host is set to `localhost`, the port
+to the HTTP port, which is 8080 by defaut. The paths mappings are set appropriately.
+
+If you are using Windows on Mac, in the Docker-compose, you can add the following environment variable:
+
+```
+XDEBUG_CONFIG: "remote_host=host.docker.internal"
+```
+
+### 4.2 MySQL
+
+#### 4.2.1 Import a dump
+
+First, remove the existing volumes:
+
+```
+$ sudo docker-compose down -v
+```
+
+Then place your MySQL dump file in the `docker/mysql` folder, and start the containers normally.
+
+### 4.3 NPM
+
+#### 4.3.1 Hot Module Reload
 
 Make sure your .js files load using the `mix` helper as shown here:
 
@@ -172,7 +199,7 @@ Make sure your .js files load using the `mix` helper as shown here:
 <script src="{{ mix('js/app.js') }}" defer></script>
 ```
 
-#### 4.1.2 Browsersync
+#### 4.3.2 Browsersync
 
 Add the following to your Blade layout:
 
@@ -197,6 +224,7 @@ Add the following to your Blade layout:
 | BROWSERSYNC_PORT       | 3000               | HTTP port of the Browsersync service of the NPM container                                                       |
 | BROWSERSYNC_ADMIN_PORT | 3001               | HTTP port of the Browsersync admin panel of the NPM container Accessible at https://localhost:3001              |
 | PHP_VERSION            | 7.4                | PHP Version. Can be one of: 7.2, 7.3, 7.4                                                                       |
+| PHP_SERVER_NAME        | laravel            | PHP Server Name, used for xdebug                                                                                |
 | USER_ID                | 1000               | Linux User ID for file and folder permissions                                                                   |
 | GROUP_ID               | 1000               | Linux Group ID for file and folder permissions                                                                  |
 | MIX_MODE               | watch              | Laravel Mix mode. Can be one of: watch, hot, dev, prod.                                                         |

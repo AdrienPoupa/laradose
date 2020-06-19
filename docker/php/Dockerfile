@@ -6,8 +6,6 @@ WORKDIR /var/www
 
 COPY docker/php/xdebug.ini /usr/local/etc/php/conf.d
 
-ENV PHP_IDE_CONFIG="serverName=laravel"
-
 RUN apk add --no-cache $PHPIZE_DEPS \
     && pecl install xdebug \
     && docker-php-ext-install pdo pdo_mysql pcntl json posix calendar -j$(getconf _NPROCESSORS_ONLN) \

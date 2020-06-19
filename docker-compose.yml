@@ -25,6 +25,7 @@ services:
       dockerfile: ./docker/php/Dockerfile
     environment:
       PHP_VERSION: ${PHP_VERSION}
+      PHP_IDE_CONFIG: "serverName=${PHP_SERVER_NAME}"
     volumes:
       - ./:/var/www
     user: "${USER_ID}:${GROUP_ID}"
