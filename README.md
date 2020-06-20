@@ -46,7 +46,7 @@ Found a bug, have a suggestion? Please [open an issue](https://github.com/Adrien
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - unzip and wget or curl for the installation script
 
-This was tested on Linux (Ubuntu, should work on all Debian derivatives) and Windows (2004, Docker Desktop and WSL2 Backend, 
+This was tested on Linux (Ubuntu, should work on all Debian derivatives) and Windows 10 2004(Docker Desktop and WSL2 Backend, 
 Ubuntu 20.04 LTS). It may or may not work on MacOS.
 
 ## 2. Installation Instructions
@@ -96,7 +96,7 @@ $ openssl req -new -key ./docker/nginx/keys/server.key -out ./docker/nginx/keys/
 
 ### 2.3 Installation on Windows
 
-Laradose was tested successfully on Windows 2004 with WSL2. Start by [installing WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+Laradose was tested successfully on Windows 10 2004 with WSL2. Start by [installing WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 I would recommend using the Linux distribution Ubuntu 20.04 LTS.
 
