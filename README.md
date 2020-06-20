@@ -23,6 +23,7 @@ Additional containers can be enabled:
 2. [Installation Instructions](#2-installation-instructions)
    1. [Automated installation](#21-automated-installation)
    2. [Manual installation](#22-manual-installation)
+   3. [Installation on Windows](#23-installation-on-windows)
 3. [Usage](#3-usage)
    1. [Configuration](#31-configuration)
    2. [Commands](#32-commands)
@@ -43,16 +44,18 @@ Found a bug, have a suggestion? Please [open an issue](https://github.com/Adrien
 
 - [Docker](https://docs.docker.com/engine/install//)
 - [Docker Compose](https://docs.docker.com/compose/install/)
+- unzip and wget or curl for the installation script
 
-This was tested on Linux. It may or may not work on Windows or MacOS.
+This was tested on Linux (Ubuntu) and Windows (Docker Desktop and WSL2 Backend, Ubuntu 20.04 LTS). It may or may not work on MacOS.
 
 ## 2. Installation Instructions
 
 ### 2.1 Automated installation
 
 A Bash script is provided to install Laradose automatically. It will add the required files to your project's folder
-and help you configure Laradose. This is the preferred method. Before running the script, it is recommended to commit
-your project so you can revert to the previous state if needed. To use it, `cd` into your project's folder and run:
+and help you configure Laradose. This is the preferred method. If you are running Windows, please read 
+[Installation on Windows](#23-installation-on-windows). Before running the script, it is recommended to commit your 
+project so you can revert to the previous state if needed. To use it, `cd` into your project's folder and run:
 
 ```
 $ wget https://raw.githubusercontent.com/AdrienPoupa/laradose/master/laradose.sh && chmod +x laradose.sh
@@ -89,6 +92,18 @@ $ openssl req -new -key ./docker/nginx/keys/server.key -out ./docker/nginx/keys/
 6. Add the `--https` argument to the `hot` section of your `package.json`
 7. Set write permissions on the host: `$ chown -R $(id -u):$(id -g) . && chmod -R 755 .`
 8. You can configure the environment variables manually as shown in [Available Parameters](#5-available-parameters).
+
+### 2.3 Installation on Windows
+
+Laradose was tested successfully on Windows 2004 with WSL2. Start by [installing WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+
+I would recommend using the Linux distribution Ubuntu 20.04 LTS.
+
+Make sure Docker Desktop [uses the WSL2 backend](https://docs.docker.com/docker-for-windows/wsl/). 
+
+You can run the installation script from the Ubuntu 20.04 LTS application shell, and Docker compose from Powershell.
+
+To setup xdebug, make sure to follow the instructions at [Setup xdebug for PHPStorm](#411-setup-xdebug-for-phpstorm).
 
 ## 3. Usage
 
