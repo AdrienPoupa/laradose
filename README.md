@@ -62,7 +62,7 @@ The script will:
 1. Download this repository's files
 2. Copy them in your project's folder
 3. Generate the SSL certificates needed for HTTPS
-4. Modify the following files to adapt them to the local environment: `.env.`, `.env.example`, `package.json`
+4. Modify the following files to adapt them to the local environment: `.env.`, `.env.example`, `package.json`, `webpack.mix.js`
 5. Apply the correct permissions
 6. Run the configuration tool to specify which containers should be enabled, on which ports, etc
 
