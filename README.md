@@ -37,6 +37,8 @@ Additional containers can be enabled:
 5. [Available Parameters](#5-available-parameters)
 6. [Q&A](#6-qa)
 
+Found a bug, have a suggestion? Please [open an issue](https://github.com/AdrienPoupa/laradose/issues) so we can discuss it!
+
 ## 1. Requirements
 
 - [Docker](https://docs.docker.com/engine/install//)
