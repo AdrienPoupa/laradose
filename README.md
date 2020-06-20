@@ -252,7 +252,11 @@ tell Git to fetch them when cloning a repo: this creates an extra step when sett
 Moreover, submodules are not updated automatically; a trivial change in a Dockerfile
 would result in a mess unless you fork the Git submodule repo by yourself but that creates more friction.
 
-3. Permission issue!
+3. Why not create a package?
+
+To install a PHP package, you need Composer. To run PHP files, you need PHP. But this solution aims to avoid installing Composer and/or PHP on your host to begin with. Thus it makes no sense to require Composer and PHP to install a package that aims to provide Composer and PHP.
+
+4. Permission issue!
 
 Make sure your `USER_ID` and `GROUP_ID` environment variables match your current user. Then, in your project's folder, 
 do `chown -R $(id -u):$(id -g) . && chmod -R 755 .`
