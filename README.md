@@ -49,7 +49,8 @@ This was tested on Linux. It may or may not work on Windows or MacOS.
 ### 2.1 Automated installation
 
 A Bash script is provided to install Laradose automatically. It will add the required files to your project's folder
-and help you configure Laradose. This is the preferred method. To use it, `cd` into your project's folder and run:
+and help you configure Laradose. This is the preferred method. Before running the script, it is recommended to commit
+your project so you can revert to the previous state if needed. To use it, `cd` into your project's folder and run:
 
 ```
 $ wget https://raw.githubusercontent.com/AdrienPoupa/laradose/master/laradose.sh && chmod +x laradose.sh
@@ -61,8 +62,9 @@ The script will:
 1. Download this repository's files
 2. Copy them in your project's folder
 3. Generate the SSL certificates needed for HTTPS
-4. Apply the correct permissions
-5. Run the configuration tool to specify which containers should be enabled, on which ports, etc
+4. Modify the following files to adapt them to the local environment: `.env.`, `.env.example`, `package.json`
+5. Apply the correct permissions
+6. Run the configuration tool to specify which containers should be enabled, on which ports, etc
 
 It is recommended to commit your files before running the script,
 so you can rollback the modifications it made if needed.
@@ -76,15 +78,15 @@ You can install Laradose manually if you do not wish to use the script.
 - The `docker-compose.yml` file
 2. Append the content of `.env` to your `.env` file
 3. Set `DB_HOST=mysql` and `REDIS_HOST=redis`
-4. Append the content of `webpack.mix.js` to your `webpack.mix.js` file
-
-Set write permissions on the host
-
+4. Generate the SSL certificates:
 ```
-$ chmod -R 755 .
+$ openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout ./docker/nginx/keys/server.key -out ./docker/nginx/keys/server.crt -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=localhost" > /dev/null 2>&1
+$ openssl req -new -key ./docker/nginx/keys/server.key -out ./docker/nginx/keys/server.csr -subj "/C=GB/ST=London/L=London/O=Global Security/OU=IT Department/CN=localhost" > /dev/null 2>&1
 ```
-
-You can configure the environment variables manually as shown in [Available Parameters](#5-available-parameters).
+5. Append the content of `webpack.mix.js` to your `webpack.mix.js` file
+6. Add the `--https` argument to the `hot` section of your `package.json`
+7. Set write permissions on the host: `$ chown -R $(id -u):$(id -g) . && chmod -R 755 .`
+8. You can configure the environment variables manually as shown in [Available Parameters](#5-available-parameters).
 
 ## 3. Usage
 
