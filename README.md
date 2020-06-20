@@ -46,7 +46,8 @@ Found a bug, have a suggestion? Please [open an issue](https://github.com/Adrien
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - unzip and wget or curl for the installation script
 
-This was tested on Linux (Ubuntu) and Windows (Docker Desktop and WSL2 Backend, Ubuntu 20.04 LTS). It may or may not work on MacOS.
+This was tested on Linux (Ubuntu, should work on all Debian derivatives) and Windows (2004, Docker Desktop and WSL2 Backend, 
+Ubuntu 20.04 LTS). It may or may not work on MacOS.
 
 ## 2. Installation Instructions
 
