@@ -2,7 +2,7 @@
 
 Laradose aims to bring a light yet powerful and configurable Docker compose configuration to run a Laravel
 application locally. Installation and configuration are made easy with the provided Bash script. 
-Six containers are installed out of the box:
+Custom settings are saved in Laravel's `.env`. Six containers are installed out of the box:
 
 - PHP with configurable versions and xdebug support
 - Nginx with HTTPS support
@@ -46,7 +46,7 @@ Found a bug, have a suggestion? Please [open an issue](https://github.com/Adrien
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - unzip and wget or curl for the installation script
 
-This was tested on Linux (Ubuntu, should work on all Debian derivatives) and Windows 10 2004(Docker Desktop and WSL2 Backend, 
+This was tested on Linux (Ubuntu, should work on all Debian derivatives) and Windows 10 2004 (Docker Desktop and WSL2 Backend, 
 Ubuntu 20.04 LTS). It may or may not work on MacOS.
 
 ## 2. Installation Instructions
