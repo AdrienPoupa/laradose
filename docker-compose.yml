@@ -57,7 +57,7 @@ services:
     depends_on:
       - mysql
     working_dir: /var/www
-    entrypoint: ['/var/www/artisan']
+    entrypoint: ['php', '/var/www/artisan']
     user: "${USER_ID}:${GROUP_ID}"
     networks:
       - laravel
