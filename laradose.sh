@@ -105,13 +105,13 @@ configure() {
   # Remove last :
   compose_file_input=${compose_file_input%?}
 
-  sed -i "s#COMPOSE_PROJECT_NAME=.*#COMPOSE_PROJECT_NAME=${APP_NAME}#" ./.env
+  replace_in_file "s#COMPOSE_PROJECT_NAME=.*#COMPOSE_PROJECT_NAME=${APP_NAME}#" ./.env
 
-  sed -i "s#DB_HOST=.*#DB_HOST=mysql#" ./.env
+  replace_in_file "s#DB_HOST=.*#DB_HOST=mysql#" ./.env
 
-  sed -i "s#DB_PASSWORD=.*#DB_PASSWORD=${DB_USERNAME}#" ./.env
+  replace_in_file "s#DB_PASSWORD=.*#DB_PASSWORD=${DB_USERNAME}#" ./.env
 
-  sed -i "s#COMPOSE_FILE=.*#COMPOSE_FILE=${compose_file_input}#" ./.env
+  replace_in_file "s#COMPOSE_FILE=.*#COMPOSE_FILE=${compose_file_input}#" ./.env
 
   env_input "NGINX_HTTPS_PORT" "Nginx HTTPS port"
 
@@ -122,7 +122,7 @@ configure() {
   env_input "WEBPACK_PORT" "Webpack Development Server port"
 
   if [[ $compose_file_input == *"redis"* ]]; then
-    sed -i "s#REDIS_HOST=.*#REDIS_HOST=redis#" ./.env
+    replace_in_file "s#REDIS_HOST=.*#REDIS_HOST=redis#" ./.env
 
     env_input "REDIS_PORT" "Redis port"
   fi
@@ -132,11 +132,11 @@ configure() {
   fi
 
   if [[ $compose_file_input == *"mailhog"* ]]; then
-    sed -i "s#MAIL_HOST=.*#MAIL_HOST=mailhog#" ./.env
+    replace_in_file "s#MAIL_HOST=.*#MAIL_HOST=mailhog#" ./.env
 
-    sed -i "s#MAIL_MAILER=.*#MAIL_MAILER=smtp#" ./.env
+    replace_in_file "s#MAIL_MAILER=.*#MAIL_MAILER=smtp#" ./.env
 
-    sed -i "s#MAIL_PORT=.*#MAIL_PORT=1025#" ./.env
+    replace_in_file "s#MAIL_PORT=.*#MAIL_PORT=1025#" ./.env
 
     env_input "MAILHOG_PORT" "MailHog port"
   fi
@@ -171,8 +171,14 @@ env_input() {
   read -r -p "$description: [${!key}] " new_value
 
   if [ -n "$new_value" ]; then
-    sed -i "s/${key}=.*/${key}=${new_value}/" ./.env
+    replace_in_file "s/${key}=.*/${key}=${new_value}/" ./.env
   fi
+}
+
+# We cant easily use sed since OS X has a different sed implementation than linux. Opting to use perl instead as it
+# should be readily available in most systems. See https://stackoverflow.com/a/22247781/3781678
+replace_in_file() {
+  perl -pi -e "$1" "$2"
 }
 
 post_install_commands() {
@@ -182,7 +188,7 @@ post_install_commands() {
 
   # Add the https argument to the "hot" npm run option,
   # since the webpack option passed in webpack is apparently not enough
-  sed -i "s/--disable-host-check/--disable-host-check --https/" package.json
+  replace_in_file "s/--disable-host-check/--disable-host-check --https/" package.json
 }
 
 uninstall() {
@@ -274,6 +280,8 @@ while true
 do
   verify_command docker || fatal 'Docker is required for Laradose'
   verify_command docker-compose || fatal 'docker-compose is required for Laradose'
+  verify_command perl || fatal 'Perl is required for Laradose'
+
   if ! [ -f ./.env ]; then
   fatal 'You must have a .env file'
   fi
