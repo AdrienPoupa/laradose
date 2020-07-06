@@ -282,6 +282,8 @@ while true
 do
   verify_command docker || fatal 'Docker is required for Laradose'
   verify_command docker-compose || fatal 'docker-compose is required for Laradose'
+  verify_command perl || fatal 'Perl is required for Laradose'
+
   if ! [ -f ./.env ]; then
   fatal 'You must have a .env file'
   fi
