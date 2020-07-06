@@ -180,8 +180,6 @@ post_install_commands() {
   chown -R "$(id -u)":"$(id -g)" .
   chmod -R 755 .
 
-  chmod +x artisan
-
   # Add the https argument to the "hot" npm run option,
   # since the webpack option passed in webpack is apparently not enough
   sed -i "s/--disable-host-check/--disable-host-check --https/" package.json
