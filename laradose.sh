@@ -2,7 +2,7 @@
 
 DOWNLOADER=
 GITHUB_URL=https://github.com/AdrienPoupa/laradose
-VERSION=1.0.0
+VERSION=1.0.1
 
 install() {
   if [ -d ./docker ]; then
@@ -144,6 +144,8 @@ configure() {
   env_input "PHP_VERSION" "PHP Version (7.2, 7.3, 7.4)"
 
   env_input "PHP_SERVER_NAME" "PHP Server Name for xdebug"
+
+  env_input "MYSQL_VERSION" "MySQL Version (5.7, 8)"
 
   env_input "USER_ID" "Linux User ID for file permissions (current user: $(id -u))"
 

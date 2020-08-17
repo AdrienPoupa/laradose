@@ -245,6 +245,7 @@ Add the following to your Blade layout:
 | BROWSERSYNC_ADMIN_PORT | 3001               | HTTP port of the Browsersync admin panel of the NPM container Accessible at https://localhost:3001              |
 | PHP_VERSION            | 7.4                | PHP Version. Can be one of: 7.2, 7.3, 7.4                                                                       |
 | PHP_SERVER_NAME        | laravel            | PHP Server Name, used for xdebug                                                                                |
+| MYSQL_VERSION          | 5.7                | MySQL Version. Can be one of: 5.7, 8                                                                           |
 | USER_ID                | 1000               | Linux User ID for file and folder permissions                                                                   |
 | GROUP_ID               | 1000               | Linux Group ID for file and folder permissions                                                                  |
 | MIX_MODE               | watch              | Laravel Mix mode. Can be one of: watch, hot, dev, prod.                                                         |
