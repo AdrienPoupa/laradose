@@ -2,7 +2,7 @@
 # Author: Adrien Poupa
 # https://github.com/AdrienPoupa/laradose
 
-version: '3'
+version: '3.7'
 
 services:
   mysql:
@@ -17,7 +17,8 @@ services:
     networks:
       - laravel
 
-  php:
+  x-php:
+    &php-base
     build:
       context: .
       args:
@@ -25,12 +26,18 @@ services:
       dockerfile: ./docker/php/Dockerfile
     environment:
       PHP_VERSION: ${PHP_VERSION}
-      PHP_IDE_CONFIG: "serverName=${PHP_SERVER_NAME}"
     volumes:
       - ./:/var/www
+    working_dir: /var/www
     user: "${USER_ID}:${GROUP_ID}"
     networks:
       - laravel
+
+  php:
+    <<: *php-base
+    environment:
+      PHP_VERSION: ${PHP_VERSION}
+      PHP_IDE_CONFIG: "serverName=${PHP_SERVER_NAME}"
 
   nginx:
     image: nginx:stable-alpine
@@ -45,22 +52,10 @@ services:
       - laravel
 
   artisan:
-    build:
-      context: .
-      args:
-        PHP_VERSION: ${PHP_VERSION}
-      dockerfile: ./docker/php/Dockerfile
-    environment:
-      PHP_VERSION: ${PHP_VERSION}
-    volumes:
-      - ./:/var/www
+    <<: *php-base
     depends_on:
       - mysql
-    working_dir: /var/www
     entrypoint: ['php', '/var/www/artisan']
-    user: "${USER_ID}:${GROUP_ID}"
-    networks:
-      - laravel
 
   composer:
     image: composer:latest

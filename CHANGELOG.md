@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.0] - 2020-09-07
 ### Added
 - Scheduler container
+### Changed
+- Bumped Docker-compose version to 3.7
+- Used [extension fields](https://docs.docker.com/compose/compose-file/#extension-fields) for the PHP service
 
 ## [1.0.1] - 2020-08-17
 ### Changed
