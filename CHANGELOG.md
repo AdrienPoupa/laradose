@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2020-09-07
+### Added
+- Scheduler container
+
 ## [1.0.1] - 2020-08-17
 ### Changed
 - Made MySQL version modifiable and defaulting to 5.7, as 8.0 has issues with PHP 7.3 and older

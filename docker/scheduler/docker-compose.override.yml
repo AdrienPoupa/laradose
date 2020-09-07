@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  scheduler:
+    environment:
+      PHP_VERSION: ${PHP_VERSION}
+    build:
+      context: .
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+      dockerfile: ./docker/php/Dockerfile
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - mysql
+      - composer
+    working_dir: /var/www
+    entrypoint: ['./docker/scheduler/entrypoint.sh']
+    user: "${USER_ID}:${GROUP_ID}"
+    networks:
+      - laravel

@@ -78,8 +78,8 @@ configure() {
   # Export the vars in .env into your shell:
   export $(grep -E -v '^#' .env | xargs)
 
-  options=("Queue" "Redis" "Laravel Horizon" "phpMyAdmin" "MailHog")
-  folders=("queue" "redis" "horizon" "phpmyadmin" "mailhog")
+  options=("Queue" "Redis" "Laravel Horizon" "phpMyAdmin" "MailHog" "Scheduler")
+  folders=("queue" "redis" "horizon" "phpmyadmin" "mailhog" "scheduler")
 
   # Fill already selected options
   for i in "${!folders[@]}"; do
@@ -187,6 +187,7 @@ post_install_commands() {
   echo "Applying permissions..."
   chown -R "$(id -u)":"$(id -g)" .
   chmod -R 755 .
+  chmod +x docker/scheduler/entrypoint.sh
 
   # Add the https argument to the "hot" npm run option,
   # since the webpack option passed in webpack is apparently not enough

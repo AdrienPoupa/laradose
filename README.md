@@ -18,6 +18,7 @@ Additional containers can be enabled:
 - Laravel Horizon: Redis-powered queue manager
 - MailHog: local email server
 - PHPMyAdmin: database management
+- Scheduler: Laravel Scheduler
 
 1. [Requirements](#1-requirements)
 2. [Installation Instructions](#2-installation-instructions)
