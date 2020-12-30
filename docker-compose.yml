@@ -76,7 +76,7 @@ services:
     environment:
       MIX_MODE: ${MIX_MODE}
       MIX_BROWSERSYNC: ${MIX_BROWSERSYNC}
-    entrypoint: "npm run ${MIX_MODE}"
+    command: sh -c "npm install && npm run ${MIX_MODE}"
     volumes:
       - ./:/var/www
       - ./docker/nginx/keys:/etc/ssl
